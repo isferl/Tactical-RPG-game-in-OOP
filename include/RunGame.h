@@ -1,31 +1,32 @@
 #pragma once
-#include "Player.h"
-#include "FullMap.h"
-#include "GameState.h"
-#include "GenerateBoard.h"
-#include "Input.h"
-#include "Moved.h"
-#include "EndGame.h"
-#include "FactoryRobot.h"
+#include <list>
+#include <Robot/Player.h>
+#include <GameMap/GameWorld.h>
+#include <GameProcess/GameState.h>
+#include <Other/Input.h>
+#include <GameProcess/Moved.h>
+#include <GameProcess/EndGame.h>
 
 class RunGame {
 protected:
-	GameState current_state = GameState::WaitingForPlayerInput;
-	int turn_number = 0;
+    GameState current_state = GameState::WaitingForPlayerInput;
+    int turn_number = 0;
 
-	void handle_action(Input::Action action, Board &board, RobotPlayer &player,
-		FullMap &map, Moved &moved, sf::RenderWindow &window,
-		const std::vector<Robot> &enemies, EndGame &endgame);
-	bool check_game_over(const RobotPlayer &player,
-		const std::vector<Robot> &enemies, EndGame &endgame);
-	void update_turn(Board &board, RobotPlayer &player, FullMap &map,
-		std::vector<Robot> &allies, std::vector<Robot> &enemies,
-		std::vector<RobotFactory> &factories, EndGame &endgame);
+    void handle_action(Input::Action action, GameWorld &world, Moved &moved, sf::RenderWindow &window, EndGame &endgame,
+                       bool &continue_game);
+
+    bool check_game_over(GameWorld &world, EndGame &endgame);
+
+    void update_turn(GameWorld &world, EndGame &endgame);
+
+    void clear_dead(std::list<Robot> &robots);
+
+    void turn_end_status(Robot &robot, GameWorld &world);
 
 public:
-	void launch_window();
-	void end_turn(Board &board, RobotPlayer &player, FullMap &map,
-		std::vector<Robot> &allies, std::vector<Robot> &enemies);
-	void next_turn(RobotPlayer &player, std::vector<Robot> &allies,
-		std::vector<Robot> &enemies);
+    void launch_window();
+
+    void end_turn(GameWorld &world);
+
+    void next_turn(GameWorld &world);
 };

@@ -19,7 +19,17 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SFML)
 
-file(GLOB SOURCES CONFIGURE_DEPENDS
+FetchContent_Declare(
+        json
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        GIT_TAG v3.12.0
+        GIT_SHALLOW ON
+)
+
+FetchContent_MakeAvailable(json)
+
+
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
@@ -34,6 +44,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         SFML::Graphics
+        nlohmann_json::nlohmann_json
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
