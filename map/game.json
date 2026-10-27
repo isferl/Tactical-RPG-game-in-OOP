@@ -1,0 +1,171 @@
+{
+  "level_id": "lab2_01",
+  "rules": {
+    "stamina_restored_per_turn": 15
+  },
+  "board": {
+    "width": 10,
+    "height": 10,
+    "cell_types": {
+      "0": {
+        "impassable": false,
+        "move_cost": 5
+      },
+      "1": {
+        "impassable": true
+      },
+      "2": {
+        "impassable": false,
+        "move_cost": 10
+      },
+      "3": {
+        "impassable": false,
+        "move_cost": 15
+      }
+    },
+    "layout": [
+      "0000000000",
+      "0022003300",
+      "0022003300",
+      "0000000000",
+      "0000000000",
+      "0000000000",
+      "0111000000",
+      "0000000000",
+      "0000000000",
+      "0000000000"
+    ],
+    "robot_templates": {
+      "player": {
+        "kind": "player",
+        "stats": {
+          "max_hp": 100,
+          "damage": 25,
+          "heal": 20,
+          "max_stamina": 15,
+          "visibility_distance": 7,
+          "xp_for_kill": 0
+        }
+      },
+      "enemy": {
+        "kind": "enemy",
+        "stats": {
+          "max_hp": 100,
+          "damage": 25,
+          "heal": 20,
+          "max_stamina": 15,
+          "visibility_distance": 0,
+          "xp_for_kill": 30
+        }
+      },
+      "ally": {
+        "kind": "ally",
+        "stats": {
+          "max_hp": 100,
+          "damage": 25,
+          "heal": 20,
+          "max_stamina": 15,
+          "visibility_distance": 0,
+          "xp_for_kill": 0
+        }
+      }
+    },
+    "robots": [
+      {
+        "id": "player_1",
+        "template": "player",
+        "position": {
+          "x": 1,
+          "y": 1
+        },
+        "rank": 1,
+        "xp": 0,
+        "inventory": [],
+        "statuses": []
+      },
+      {
+        "id": "enemy_1",
+        "template": "enemy",
+        "position": {
+          "x": 2,
+          "y": 8
+        },
+        "rank": 1,
+        "xp": 0,
+        "statuses": []
+      },
+      {
+        "id": "enemy_2",
+        "template": "enemy",
+        "position": {
+          "x": 3,
+          "y": 8
+        },
+        "rank": 1,
+        "xp": 0,
+        "statuses": []
+      },
+      {
+        "id": "enemy_3",
+        "template": "enemy",
+        "position": {
+          "x": 4,
+          "y": 8
+        },
+        "rank": 1,
+        "xp": 0,
+        "statuses": []
+      },
+      {
+        "id": "ally_1",
+        "template": "ally",
+        "position": {
+          "x": 2,
+          "y": 6
+        },
+        "rank": 1,
+        "xp": 0,
+        "statuses": []
+      },
+      {
+        "id": "ally_2",
+        "template": "ally",
+        "position": {
+          "x": 3,
+          "y": 6
+        },
+        "rank": 1,
+        "xp": 0,
+        "statuses": []
+      },
+      {
+        "id": "ally_3",
+        "template": "ally",
+        "position": {
+          "x": 4,
+          "y": 6
+        },
+        "rank": 1,
+        "xp": 0,
+        "statuses": []
+      }
+    ],
+    "factories": [
+      {
+        "id": "factory_1",
+        "position": {
+          "x": 7,
+          "y": 7
+        },
+        "size": {
+          "width": 2,
+          "height": 2
+        },
+        "spawn_interval_turns": 5,
+        "spawn_limit": 5,
+        "spawn_template": "enemy",
+        "spawn_rank": 1
+      }
+    ]
+  }
+}
