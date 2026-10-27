@@ -6,8 +6,8 @@
 
 class CoutInformation {
 protected:
-    sf::Font font{};
-    sf::Text text{};
+    sf::Font font;
+    sf::Text text;
 
 public:
     CoutInformation(const std::string &font_path);

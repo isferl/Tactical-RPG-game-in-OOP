@@ -83,7 +83,7 @@ IAbility &Robot::get_fair_damage() {
 }
 
 IAbility &Robot::get_heal_ability() {
-    return *ability[AbilityType::Heal];
+    return *ability[AbilityType::HealAbility];
 }
 
 IAbility &Robot::get_teleports() {
