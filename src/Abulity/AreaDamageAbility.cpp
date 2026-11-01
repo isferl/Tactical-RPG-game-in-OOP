@@ -1,4 +1,5 @@
 #include <Abulity/AreaDamageAbility.h>
+
 #include <GameMap/GameWorld.h>
 #include <GameProcess/Interactions.h>
 #include <Robot/Robot.h>
@@ -9,7 +10,7 @@ AreaDamageAbility::AreaDamageAbility(int level) {
     this->level = level;
     radius = 1 + level / 2;
     energy_cost = ENERGY_COST_AREA_ABILITY;
-    cooldown = 1;
+    cooldown = 2;
 }
 
 bool AreaDamageAbility::use_ability(Robot &robot, GameWorld &world, std::pair<int, int> target) {
@@ -43,6 +44,7 @@ void AreaDamageAbility::upgrade() {
         if (level % 2 == 0)
             radius += 1;
         xp -= xp_to_next_level;
+        xp_to_next_level = (level + 1) * XP_TO_NEXT_LEVEL_ABILITY;
     }
 }
 
@@ -52,4 +54,12 @@ int AreaDamageAbility::get_radius() const {
 
 AbilityType AreaDamageAbility::get_name() const {
     return AbilityType::AreaDamage;
+}
+
+std::unique_ptr<Ability> AreaDamageAbility::clone() const {
+    return std::make_unique<AreaDamageAbility>(*this);
+}
+
+int AreaDamageAbility::get_upgrade_value() const {
+    return radius;
 }

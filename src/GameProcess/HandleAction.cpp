@@ -44,7 +44,9 @@ void HandleAction::handle_action(Input::Action action, GameWorld &world, Moved &
     }
 
     if (action == Input::Action::Num1 || action == Input::Action::Num2 || action == Input::Action::Num3 || action ==
-        Input::Action::Num4) {
+        Input::Action::Num4 || action == Input::Action::Num5 || action == Input::Action::Num6 || action ==
+        Input::Action::Num7 || action == Input::Action::Num8 || action == Input::Action::Num9 || action ==
+        Input::Action::Num0) {
         use_item_from_backpack(world.get_player(), action);
         return;
     }
@@ -126,6 +128,24 @@ void HandleAction::use_item_from_backpack(RobotPlayer &player, Input::Action act
             return;
         case Input::Action::Num4:
             player.use_item_to_index(3);
+            return;
+        case Input::Action::Num5:
+            player.use_item_to_index(4);
+            return;
+        case Input::Action::Num6:
+            player.use_item_to_index(5);
+            return;
+        case Input::Action::Num7:
+            player.use_item_to_index(6);
+            return;
+        case Input::Action::Num8:
+            player.use_item_to_index(7);
+            return;
+        case Input::Action::Num9:
+            player.use_item_to_index(8);
+            return;
+        case Input::Action::Num0:
+            player.use_item_to_index(9);
             return;
     }
 }

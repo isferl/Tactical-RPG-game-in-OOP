@@ -15,4 +15,6 @@ public:
     AbilityType generate_card();
 
     AbilityType get_to_index(int index);
+
+    int get_size() const;
 };

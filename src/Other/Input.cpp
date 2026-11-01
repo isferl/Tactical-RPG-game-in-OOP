@@ -19,6 +19,13 @@ std::optional<Input::Action> Input::translate(const sf::Event &event) const {
         case sf::Keyboard::Key::Num2: return Action::Num2;
         case sf::Keyboard::Key::Num3: return Action::Num3;
         case sf::Keyboard::Key::Num4: return Action::Num4;
+        case sf::Keyboard::Key::Num5: return Action::Num5;
+        case sf::Keyboard::Key::Num6: return Action::Num6;
+        case sf::Keyboard::Key::Num7: return Action::Num7;
+        case sf::Keyboard::Key::Num8: return Action::Num8;
+        case sf::Keyboard::Key::Num9: return Action::Num9;
+        case sf::Keyboard::Key::Num0: return Action::Num0;
+        case sf::Keyboard::Key::Tab: return Action::ChangeDisplayMode;
         case sf::Keyboard::Key::Z: return Action::UseAreaDamage;
         case sf::Keyboard::Key::X: return Action::UseFairDamage;
         case sf::Keyboard::Key::C: return Action::UseHeal;

@@ -1,4 +1,5 @@
 #include <Abulity/FairDamageAbility.h>
+
 #include <GameProcess/Interactions.h>
 #include <Other/NeedFunction.h>
 #include <Robot/Robot.h>
@@ -10,7 +11,7 @@ FairDamageAbility::FairDamageAbility(int level) {
     this->level = level;
     radius = 3;
     energy_cost = ENERGY_COST_FAIR_ABILITY;
-    cooldown = 2;
+    cooldown = 3;
     damage_percent = 80 + std::max(0, level - 1) * 10;
 }
 
@@ -52,6 +53,7 @@ void FairDamageAbility::upgrade() {
         xp -= xp_to_next_level;
         ++level;
         damage_percent = 80 + std::max(0, level - 1) * 10;
+        xp_to_next_level = (level + 1) * XP_TO_NEXT_LEVEL_ABILITY;
     }
 }
 
@@ -61,4 +63,12 @@ int FairDamageAbility::get_radius() const {
 
 AbilityType FairDamageAbility::get_name() const {
     return AbilityType::FairDamage;
+}
+
+std::unique_ptr<Ability> FairDamageAbility::clone() const {
+    return std::make_unique<FairDamageAbility>(*this);
+}
+
+int FairDamageAbility::get_upgrade_value() const {
+    return damage_percent;
 }

@@ -10,6 +10,10 @@ private:
     void upgrade() override;
 
 public:
+    std::unique_ptr<Ability> clone() const override;
+
+    int get_upgrade_value() const override;
+
     explicit TeleportsAbility(int level);
 
     bool use_ability(Robot &robot, GameWorld &world, std::pair<int, int> target) override;
