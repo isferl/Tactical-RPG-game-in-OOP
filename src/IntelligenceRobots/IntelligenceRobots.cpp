@@ -39,7 +39,7 @@ bool IntelligenceRobots::main_intelligence() {
     if (dot != std::pair<int, int>{0, 0}) {
         int dist = NeedFunction::distance(robot.get_position_on_game_x(), robot.get_position_on_game_y(),
                                           dot.first, dot.second);
-        if (move_to_cell(dot, dist >= 4))
+        if (move_to_cell(dot, dist >= (TELEPORT_RADIUS - 1)))
             return true;
     }
 
