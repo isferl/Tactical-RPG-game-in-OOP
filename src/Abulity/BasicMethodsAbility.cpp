@@ -1,5 +1,21 @@
 #include <Abulity/BasicMethodsAbility.h>
 
+int BasicMethodsAbility::get_xp() const {
+    return xp;
+}
+
+int BasicMethodsAbility::get_xp_to_next_level() const {
+    return xp_to_next_level;
+}
+
+int BasicMethodsAbility::get_cooldown() const {
+    return cooldown;
+}
+
+int BasicMethodsAbility::get_remaining_cooldown() const {
+    return remaining_cooldown;
+}
+
 int BasicMethodsAbility::get_energy_cost() const {
     return energy_cost;
 }

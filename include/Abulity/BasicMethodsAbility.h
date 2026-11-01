@@ -15,6 +15,14 @@ protected:
 public:
     int get_energy_cost() const override;
 
+    int get_xp() const override;
+
+    int get_xp_to_next_level() const override;
+
+    int get_cooldown() const override;
+
+    int get_remaining_cooldown() const override;
+
     void add_xp(int xp) override;
 
     int get_level() override;

@@ -1,4 +1,5 @@
 #include <Abulity/TeleportsAbility.h>
+
 #include <Robot/Robot.h>
 #include <GameMap/GameWorld.h>
 #include <Other/NeedFunction.h>
@@ -10,7 +11,7 @@ TeleportsAbility::TeleportsAbility(int level) {
     this->level = level;
     radius = TELEPORT_RADIUS;
     energy_cost = ENERGY_COST_TELEPORT_ABILITY;
-    cooldown = 2;
+    cooldown = 3;
 }
 
 bool TeleportsAbility::use_ability(Robot &robot, GameWorld &world, std::pair<int, int> target) {
@@ -50,6 +51,7 @@ void TeleportsAbility::upgrade() {
     while (xp >= xp_to_next_level) {
         level += 1;
         xp -= xp_to_next_level;
+        xp_to_next_level = (level + 1) * XP_TO_NEXT_LEVEL_ABILITY;
     }
 }
 
@@ -63,4 +65,12 @@ int TeleportsAbility::get_radius() const {
 
 AbilityType TeleportsAbility::get_name() const {
     return AbilityType::Teleports;
+}
+
+std::unique_ptr<Ability> TeleportsAbility::clone() const {
+    return std::make_unique<TeleportsAbility>(*this);
+}
+
+int TeleportsAbility::get_upgrade_value() const {
+    return get_energy_cost();
 }

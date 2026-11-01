@@ -23,3 +23,7 @@ AbilityType GenerateCard::generate_card() {
 AbilityType GenerateCard::get_to_index(int index) {
     return card.at(index);
 }
+
+int GenerateCard::get_size() const {
+    return static_cast<int>(card.size());
+}
