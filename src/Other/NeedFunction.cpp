@@ -1,4 +1,4 @@
-#include "Other/NeedFunction.h"
+#include <Other/NeedFunction.h>
 #include <random>
 
 int NeedFunction::get_random_number(int a, int b) {

@@ -1,6 +1,5 @@
 #include <Status/ShieldStatus.h>
-
-#include "Robot/Robot.h"
+#include <Robot/Robot.h>
 
 ShieldStatus::ShieldStatus(int turns, int shield) {
     this->shield = shield;

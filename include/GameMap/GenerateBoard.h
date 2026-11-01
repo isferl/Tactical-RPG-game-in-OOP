@@ -1,15 +1,16 @@
 #pragma once
+#include <vector>
 #include <GameMap/Square.h>
-#include <GameMap/FullMap.h>
+#include <Other/CellType.h>
 
 class Board {
-protected:
+private:
     int height;
     int width;
     std::vector<std::vector<Square> > field;
 
 public:
-    Board(FullMap &map, int cost);
+    Board(int height, int width);
 
     std::vector<std::vector<Square> > &get_field();
 
@@ -18,4 +19,8 @@ public:
     int get_width() const;
 
     Square &get_square(int x, int y);
+
+    CellType get_type_in_xy(int x, int y);
+
+    void set_type_in_xy(int x, int y, CellType type);
 };

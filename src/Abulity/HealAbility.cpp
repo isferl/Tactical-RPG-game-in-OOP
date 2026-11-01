@@ -1,44 +1,41 @@
 #include <Abulity/HealAbility.h>
 #include <Robot/Robot.h>
 #include <GameMap/GameWorld.h>
+#include <cmath>
 
 HealAbility::HealAbility(int level) {
     xp_to_next_level = (level + 1) * XP_TO_NEXT_LEVEL_ABILITY;
     this->level = level;
     heal = (level + 1) * HEAL_TO_LEVEL;
+    energy_cost = ENERGY_COST_HEAL_ABILITY;
+    cooldown = 1;
 }
 
-bool HealAbility::use_ability(Robot &robot, GameWorld &world, int target_x, int target_y) {
-    if (robot.get_stamina() < get_energy_cost()) {
+bool HealAbility::use_ability(Robot &robot, GameWorld &world, std::pair<int, int> target) {
+    if (!is_ready() || !robot.get_statis_live())
         return false;
-    }
-    robot.set_stamina(robot.get_stamina() - get_energy_cost());
+    if (!robot.try_spend_stamina(get_energy_cost()))
+        return false;
+    if ((heal + robot.get_hp()) > robot.get_max_hp())
+        robot.get_shield().add_turns(ceil(static_cast<double>(heal + robot.get_hp() - robot.get_max_hp()) / SHIELD_BlOCK));
     robot.to_heal(heal);
+    start_cooldown();
     return true;
 }
 
-int HealAbility::get_energy_cost() const {
-    return energy_cost;
-}
-
-void HealAbility::add_xp(int xp) {
-    this->xp += xp;
-    if (this->xp >= xp_to_next_level)
-        upgrade();
-}
-
-int HealAbility::get_level() {
-    return level;
-}
 
 void HealAbility::upgrade() {
-    while (xp > xp_to_next_level) {
+    while (xp >= xp_to_next_level) {
         level += 1;
         heal += HEAL_TO_LEVEL;
-        xp_to_next_level -= xp;
+        xp -= xp_to_next_level;
     }
 }
 
+int HealAbility::get_radius() const {
+    return 0;
+}
+
 AbilityType HealAbility::get_name() const {
-    return AbilityType::HealAbility;
+    return AbilityType::Heal;
 }

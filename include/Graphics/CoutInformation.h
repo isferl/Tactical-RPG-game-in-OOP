@@ -5,9 +5,9 @@
 #include <SFML/Graphics/Text.hpp>
 
 class CoutInformation {
-protected:
-    sf::Font font{};
-    sf::Text text{};
+private:
+    sf::Font font;
+    sf::Text text;
 
 public:
     CoutInformation(const std::string &font_path);

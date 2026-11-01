@@ -10,6 +10,13 @@
 #include <Other/Constants.h>
 #include <Robot/Ally.h>
 #include <Robot/Player.h>
+#include <GameProcess/HandleAction.h>
+#include <GameProcess/TurnGame.h>
+#include <GameProcess/ChoseCell.h>
+#include <Abulity/Ability.h>
+#include <GameProcess/GenerateCard.h>
+#include <Other/ItemsType.h>
+#include <nlohmann/json.hpp>
 
 void RunGame::launch_window() {
     sf::Image image;
@@ -21,16 +28,19 @@ void RunGame::launch_window() {
     while (continue_game) {
         current_state = GameState::WaitingForPlayerInput;
         turn_number = 0;
-
-        IncludeJson Json;
-        LevelConfig config = Json.load("game.json");
-
+        LevelConfig config = IncludeJson::load("game.json");
         GameWorld world(config);
         GenerateGame generate_game;
         generate_game.create(world, config);
-        Moved moved;
 
-        world.get_player().get_area_damage().add_xp(10);
+        Moved moved;
+        TurnGame Turn;
+        HandleAction actions;
+        GenerateCard card;
+
+        world.get_board().get_square(2, 1).set_random_item();
+        world.get_board().get_square(1, 2).set_random_item();
+        world.get_board().get_square(2, 2).set_random_item();
 
         EndGame endgame(world.get_enemies().size(),
                         "../../material/Fond/HomeVideo-Regular.ttf");
@@ -41,207 +51,121 @@ void RunGame::launch_window() {
         window.setIcon(image);
 
         while (window.isOpen()) {
+            actions.choose_ability_if_need(world.get_player(), current_state);
             Input input;
             while (const auto action = input.read(window)) {
-                handle_action(*action, world, moved, window, endgame, continue_game);
+                actions.handle_action(*action, world, moved, window, endgame, continue_game, current_state, card);
                 if (!window.isOpen())
                     break;
+                actions.choose_ability_if_need(world.get_player(), current_state);
             }
             if (!window.isOpen())
                 break;
-            update_turn(world, endgame);
+            Turn.update_turn(world, endgame, current_state, turn_number);
+            actions.choose_ability_if_need(world.get_player(), current_state);
             window.clear();
             Render.draw_board(world);
             Render.draw_factories(world);
             Render.draw_player(world);
-            Render.draw_robots(world.get_enemies(), -2);
-            Render.draw_robots(world.get_allies(), 2);
+            Render.draw_robots(world.get_enemies(), CellType::EnemyType);
+            Render.draw_robots(world.get_allies(), CellType::AllyType);
             Render.draw_invisible_cell(world);
+
+
+            if (current_state == GameState::ChoosingCell) {
+                Render.draw_selected_cell(actions.get_selection().get_selected(), world,
+                                          *actions.get_selected_ability_type());
+                Render.draw_blackout(actions.get_selection().get_radius(), world);
+            }
+
             if (current_state == GameState::GameOver)
                 endgame.draw(window);
 
+            std::cout << "-------" << std::endl;
 
-            // for (const auto &[type, status]:
-            //      world.get_player().get_statues()) {
-            //     if (status->is_finished())
-            //         continue;
-            //
-            //     switch (type) {
-            //         case StatusType::Burning:
-            //             std::cout << "Gorenue " << status->get_turns() << " ";
-            //             break;
-            //         case StatusType::Overload:
-            //             std::cout << "Peregruzka " << status->get_turns() << " ";
-            //             break;
-            //         case StatusType::Shield:
-            //             std::cout << "Shit " << status->get_turns() << " ";
-            //             break;
-            //         case StatusType::Slowdown:
-            //             std::cout << "Zamedlenue " << status->get_turns() << " ";
-            //             break;
-            //     }
-            // }
-            //
-            // std::cout << '\n';
+            std::string str;
+            str += "Status\n";
+            for (const auto &[type, status]:
+                 world.get_player().get_statues()) {
+                if (status->is_finished())
+                    continue;
 
+                switch (type) {
+                    case StatusType::Burning:
+                        str += "Gorenue " + std::to_string(status->get_turns()) + " ";
+                        break;
+                    case StatusType::Overload:
+                        str += "Peregruzka " + std::to_string(status->get_turns()) + " ";
+                        break;
+                    case StatusType::Shield:
+                        str += "Shit " + std::to_string(status->get_turns()) + " ";
+                        break;
+                    case StatusType::Slowdown:
+                        str += "Zamedlenue " + std::to_string(status->get_turns()) + " ";
+                        break;
+                }
+            }
+            str += "\nAbility Level\n";
 
+            for (const auto &[type, ability]:
+                 world.get_player().get_ability()) {
+                if (!ability->get_level())
+                    continue;
+
+                switch (type) {
+                    case AbilityType::AreaDamage:
+                        str += "Area " + std::to_string(ability->get_level()) + " ";
+                        break;
+                    case AbilityType::FairDamage:
+                        str += "Fair " + std::to_string(ability->get_level()) + " ";
+                        break;
+                    case AbilityType::Heal:
+                        str += "Heal " + std::to_string(ability->get_level()) + " ";
+                        break;
+                    case AbilityType::Teleports:
+                        str += "Teleport " + std::to_string(ability->get_level()) + " ";
+                        break;
+                }
+            }
+            str += "\nCard\n";
+            for (int i = 0; i < 4; ++i) {
+                switch (card.get_to_index(i)) {
+                    case AbilityType::AreaDamage:
+                        str += "Area ";
+                        break;
+                    case AbilityType::FairDamage:
+                        str += "Fair ";
+                        break;
+                    case AbilityType::Heal:
+                        str += "Heal ";
+                        break;
+                    case AbilityType::Teleports:
+                        str += "Teleport ";
+                        break;
+                }
+            }
+            str += "\n";
+            str += "\nBackpack\n";
+            for (int i = 0; i < world.get_player().get_backpack().size(); ++i) {
+                switch (world.get_player().get_backpack_to_index(i).get_name()) {
+                    case ItemsType::EnergyDrink:
+                        str += "EnergyDrink ";
+                        break;
+                    case ItemsType::StrengthPotion:
+                        str += "StrengthPotion ";
+                        break;
+                    case ItemsType::Meat:
+                        str += "Meat ";
+                        break;
+                }
+            }
+            str += "\n";
+            std::cout << str;
+            std::cout << "-------" << std::endl;
             info.cout_hp(window, world.get_player());
             info.cout_xp(window, world.get_player());
             info.cout_stamina(window, world.get_player());
             window.display();
         }
-    }
-}
-
-void RunGame::handle_action(Input::Action action, GameWorld &world, Moved &moved, sf::RenderWindow &window,
-                            EndGame &endgame, bool &continue_game) {
-    if (action == Input::Action::Close) {
-        continue_game = false;
-        window.close();
-        return;
-    }
-    if (action == Input::Action::UseAreaDamage) {
-        world.get_player().get_area_damage().use_ability(world.get_player(), world, 0, 0);
-        return;
-    }
-    if (action == Input::Action::Restart) {
-        window.close();
-        return;
-    }
-
-    if (current_state == GameState::GameOver) {
-        if (action == Input::Action::Confirm || action == Input::Action::Cancel) {
-            continue_game = false;
-            window.close();
-        }
-        return;
-    }
-    if (current_state != GameState::WaitingForPlayerInput ||
-        check_game_over(world, endgame))
-        return;
-    if (action == Input::Action::EndTurn) {
-        current_state = GameState::EnemiesMoving;
-        return;
-    }
-    std::optional<Moved::Direction> direction;
-    switch (action) {
-        case Input::Action::MoveLeft: direction = Moved::Direction::Left;
-            break;
-        case Input::Action::MoveRight: direction = Moved::Direction::Right;
-            break;
-        case Input::Action::MoveUp: direction = Moved::Direction::Up;
-            break;
-        case Input::Action::MoveDown: direction = Moved::Direction::Down;
-            break;
-        default: return;
-    }
-    if (moved.player_move(world, *direction)) {
-        if (check_game_over(world, endgame))
-            return;
-        if (world.get_player().get_stamina() <= 0)
-            current_state = GameState::EnemiesMoving;
-    }
-}
-
-bool RunGame::check_game_over(GameWorld &world, EndGame &endgame) {
-    int alive_enemies = 0;
-    for (const auto &enemy: world.get_enemies())
-        if (enemy.get_statis_live())
-            ++alive_enemies;
-    endgame.set_count_enemy(alive_enemies);
-    endgame.set_player_alive(world.get_player().get_statis_live());
-    if (!world.get_player().get_statis_live() || alive_enemies == 0) {
-        current_state = GameState::GameOver;
-        return true;
-    }
-    return false;
-}
-
-void RunGame::update_turn(GameWorld &world, EndGame &endgame) {
-    if (current_state == GameState::GameOver || check_game_over(world, endgame))
-        return;
-    if (current_state == GameState::EnemiesMoving) {
-        end_turn(world);
-        if (check_game_over(world, endgame))
-            return;
-        current_state = GameState::TurnComplete;
-    }
-    if (current_state == GameState::TurnComplete) {
-        for (auto &factory: world.get_factories()) {
-            factory.tick();
-            if (factory.should_spawn())
-                factory.try_spawn_enemy(world.get_board(), world.get_map(), world.get_enemies());
-        }
-        next_turn(world);
-        current_state = GameState::WaitingForPlayerInput;
-        check_game_over(world, endgame);
-    }
-}
-
-void RunGame::clear_dead(std::list<Robot> &robots) {
-    auto iterations = robots.cbegin();
-    while (iterations != robots.cend()) {
-        if (iterations->get_statis_live()) {
-            ++iterations;
-            continue;
-        }
-        iterations = robots.erase(iterations);
-    }
-}
-
-void RunGame::turn_end_status(Robot &robot, GameWorld &world) {
-    for (auto &[type, status]: robot.get_statues()) {
-        if (!status->is_finished()) {
-            status->on_turn_end(robot);
-            if (!robot.get_statis_live()) {
-                world.clear_full_cell(robot.get_position_on_map_x(), robot.get_position_on_map_y());
-                return;
-            }
-        }
-    }
-}
-
-void RunGame::end_turn(GameWorld &world) {
-    Moved moved;
-    for (auto &ally: world.get_allies()) {
-        if (!world.get_player().get_statis_live())
-            return;
-        if (ally.get_statis_live()) {
-            moved.entity_turn(ally, world, 2);
-        }
-    }
-    for (auto &enemy: world.get_enemies()) {
-        if (!world.get_player().get_statis_live())
-            return;
-        if (enemy.get_statis_live()) {
-            moved.entity_turn(enemy, world, -2);
-        }
-    }
-}
-
-void RunGame::next_turn(GameWorld &world) {
-    ++turn_number;
-    bool flag = false;
-    turn_end_status(world.get_player(), world);
-    if (world.get_player().get_statis_live())
-        world.get_player().restore_stamina(STAMINA_RESTORED_PER_TURN);
-    for (auto &ally: world.get_allies())
-        if (ally.get_statis_live()) {
-            ally.restore_stamina(STAMINA_RESTORED_PER_TURN);
-            turn_end_status(ally, world);
-        } else
-            flag = true;
-    for (auto &enemy: world.get_enemies())
-        if (enemy.get_statis_live()) {
-            enemy.restore_stamina(STAMINA_RESTORED_PER_TURN);
-            turn_end_status(enemy, world);
-        } else
-            flag = true;
-    if (flag) {
-        clear_dead(world.get_enemies());
-        clear_dead(world.get_allies());
-    }
-    for (int i = 0; i < COUNT_STATUS_FOR_TURN; ++i) {
-        GenerateGame::set_random_status_for_random_cell(world);
     }
 }

@@ -15,7 +15,14 @@ std::optional<Input::Action> Input::translate(const sf::Event &event) const {
     if (!key)
         return std::nullopt;
     switch (key->code) {
-        case sf::Keyboard::Key::Num1: return Action::UseAreaDamage;
+        case sf::Keyboard::Key::Num1: return Action::Num1;
+        case sf::Keyboard::Key::Num2: return Action::Num2;
+        case sf::Keyboard::Key::Num3: return Action::Num3;
+        case sf::Keyboard::Key::Num4: return Action::Num4;
+        case sf::Keyboard::Key::Z: return Action::UseAreaDamage;
+        case sf::Keyboard::Key::X: return Action::UseFairDamage;
+        case sf::Keyboard::Key::C: return Action::UseHeal;
+        case sf::Keyboard::Key::V: return Action::UseTeleports;
         case sf::Keyboard::Key::Enter: return Action::Confirm;
         case sf::Keyboard::Key::Escape: return Action::Cancel;
         case sf::Keyboard::Key::Space: return Action::EndTurn;

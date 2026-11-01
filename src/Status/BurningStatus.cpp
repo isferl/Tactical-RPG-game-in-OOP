@@ -1,5 +1,4 @@
 #include <Status/BurningStatus.h>
-
 #include <Robot/Robot.h>
 
 BurningStatus::BurningStatus(int turns, int damage) {

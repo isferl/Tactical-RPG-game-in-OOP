@@ -1,4 +1,4 @@
-#include "include/RunGame.h"
+#include <RunGame.h>
 
 int main() {
     RunGame Window;

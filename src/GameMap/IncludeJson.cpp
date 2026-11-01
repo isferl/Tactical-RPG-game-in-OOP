@@ -5,7 +5,7 @@
 #include <nlohmann/json.hpp>
 
 
-LevelConfig IncludeJson::load(const std::string filename) const {
+LevelConfig IncludeJson::load(std::string filename) {
     std::ifstream input_file("../../map/" + filename);
     nlohmann::json loaded_json;
     input_file >> loaded_json;
@@ -18,9 +18,9 @@ LevelConfig IncludeJson::load(const std::string filename) const {
         CellConfig cell_config;
         cell_config.impassable = item.value()["impassable"];
         if (!cell_config.impassable)
-            cell_config.move_cost = item.value()["move_cost"];
+            cell_config.cost = item.value()["move_cost"];
         else
-            cell_config.move_cost = 0;
+            cell_config.cost = CostCell::Null;
         cell_types[item.key()[0]] = cell_config;
     }
     std::deque<std::string> layout;

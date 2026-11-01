@@ -10,6 +10,7 @@ constexpr int BOARD_WIDTH = 10;
 
 constexpr int ROBOT_RADIUS = 10;
 constexpr int VISIBILITY_DISTANCE = 7;
+constexpr int ENTITIES_VISIBILITY_DISTANCE = 7;
 
 constexpr float OFFSET_X = (WINDOW_WIDTH - CEIL_SIZE * (BOARD_WIDTH + 2)) / 2.f;
 constexpr float OFFSET_Y = (WINDOW_HEIGHT - CEIL_SIZE * (BOARD_HEIGHT + 2)) / 2.f;
@@ -41,9 +42,23 @@ constexpr int BURNING_DAMAGE = 5;
 constexpr int SHIELD_BlOCK = 5;
 
 constexpr int COUNT_STATUS_FOR_TURN = 5;
+constexpr int COUNT_ITEMS_FOR_TURN = 5;
 
 constexpr int XP_TO_NEXT_LEVEL_ABILITY = 10;
 constexpr int ENERGY_COST_AREA_ABILITY = 5;
 constexpr int ENERGY_COST_FAIR_ABILITY = 5;
 constexpr int ENERGY_COST_HEAL_ABILITY = 5;
 constexpr int HEAL_TO_LEVEL = 5;
+constexpr int ENERGY_COST_TELEPORT_ABILITY = 5;
+
+constexpr int XP_FOR_RANK_UP = 10;
+
+constexpr int CARD_IN_GAME = 4;
+
+constexpr int MEAT_HEALING = 30;
+constexpr int ENERGY_DRINK_RESTORE = 30;
+constexpr int STRENGTH_POTION = 30;
+constexpr int STRENGTH_POTION_TIME = 5;
+
+constexpr int BACKPACK_CAPACITY =4;
+constexpr int TELEPORT_RADIUS =5;

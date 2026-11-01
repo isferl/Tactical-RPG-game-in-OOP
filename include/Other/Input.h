@@ -6,7 +6,9 @@ class Input {
 public:
     enum class Action {
         Close, Confirm, Cancel, EndTurn,
-        MoveLeft, MoveRight, MoveUp, MoveDown, Restart, UseAreaDamage, UseFairDamage, UseHeal, UseTeleports
+        MoveLeft, MoveRight, MoveUp, MoveDown,
+        Restart, UseAreaDamage, UseFairDamage, UseHeal, UseTeleports,
+        Num1, Num2, Num3, Num4
     };
 
     std::optional<Action> read(sf::RenderWindow &window) const;

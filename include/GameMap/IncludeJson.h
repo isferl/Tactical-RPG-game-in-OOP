@@ -6,5 +6,5 @@ class IncludeJson {
 protected:
 
 public:
-    LevelConfig load(const std::string filename) const;
+    static LevelConfig load(std::string filename);
 };
