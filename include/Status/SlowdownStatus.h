@@ -1,8 +1,7 @@
 #pragma once
+#include <Status/Status.h>
 
-#include <Robot/IStatus.h>
-
-class SlowdownStatus : public IStatus {
+class SlowdownStatus : public Status {
 private:
     int remaining_turns;
 

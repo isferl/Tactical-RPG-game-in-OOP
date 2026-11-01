@@ -1,9 +1,8 @@
 #pragma once
+#include <Status/Status.h>
+#include <Other/Constants.h>
 
-#include "../Robot/IStatus.h"
-#include "Other/Constants.h"
-
-class BurningStatus : public IStatus {
+class BurningStatus : public Status {
 private:
     int damage;
     int remaining_turns;

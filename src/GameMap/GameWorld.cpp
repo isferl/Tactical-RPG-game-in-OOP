@@ -1,8 +1,6 @@
 #include <GameMap/GameWorld.h>
-#include <Other/Constants.h>
 
-GameWorld::GameWorld(LevelConfig &config) : map(FullMap(config.height, config.width)),
-                                            board(map, STAMINA_FOR_EASY_CELL),
+GameWorld::GameWorld(LevelConfig &config) : board(config.height, config.width),
                                             player(config.robots_templates["player"].heal,
                                                    config.robots_templates["player"].max_hp,
                                                    config.robots_templates["player"].damage,
@@ -21,8 +19,7 @@ GameWorld::GameWorld(LevelConfig &config) : map(FullMap(config.height, config.wi
                                  config.robots_templates["enemy"].max_stamina,
                                  -2,
                                  iterations->position.first,
-                                 iterations->position.second,
-                                 false);
+                                 iterations->position.second);
         else if (iterations->templates == "ally")
             allies.emplace_back(config.robots_templates["ally"].heal,
                                 config.robots_templates["ally"].xp_for_kill,
@@ -31,8 +28,7 @@ GameWorld::GameWorld(LevelConfig &config) : map(FullMap(config.height, config.wi
                                 config.robots_templates["ally"].max_stamina,
                                 2,
                                 iterations->position.first,
-                                iterations->position.second,
-                                true);
+                                iterations->position.second);
         ++iterations;
     }
     auto iteration = config.factories.cbegin();
@@ -45,10 +41,6 @@ GameWorld::GameWorld(LevelConfig &config) : map(FullMap(config.height, config.wi
     }
 }
 
-FullMap &GameWorld::get_map() {
-    return map;
-}
-
 Board &GameWorld::get_board() {
     return board;
 }
@@ -57,11 +49,11 @@ RobotPlayer &GameWorld::get_player() {
     return player;
 }
 
-std::list<Robot> &GameWorld::get_allies() {
+std::list<Ally> &GameWorld::get_allies() {
     return allies;
 }
 
-std::list<Robot> &GameWorld::get_enemies() {
+std::list<Enemy> &GameWorld::get_enemies() {
     return enemies;
 }
 
@@ -71,5 +63,4 @@ std::list<RobotFactory> &GameWorld::get_factories() {
 
 void GameWorld::clear_full_cell(int x, int y) {
     board.get_square(x, y).clear_cell();
-    map.set_map_in_xy(x, y, 0);
 }

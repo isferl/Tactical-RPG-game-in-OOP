@@ -1,27 +1,20 @@
 #pragma once
-#include <Robot/IAbility.h>
+#include <Abulity/Ability.h>
 #include <Other/Constants.h>
+#include <Abulity/BasicMethodsAbility.h>
 
-class HealAbility : public IAbility {
-protected:
-    int level = 1;
+class HealAbility : public BasicMethodsAbility {
+private:
     int heal = 0;
-    int xp = 0;
-    int xp_to_next_level = 0;
-    int energy_cost = ENERGY_COST_FAIR_ABILITY;
+
+    void upgrade() override;
 
 public:
     explicit HealAbility(int level);
 
-    bool use_ability(Robot &robot, GameWorld &world, int target_x, int target_y) override;
+    bool use_ability(Robot &robot, GameWorld &world, std::pair<int, int> target) override;
 
-    int get_energy_cost() const override;
-
-    void add_xp(int xp) override;
-
-    int get_level() override;
-
-    void upgrade() override;
+    int get_radius() const override;
 
     AbilityType get_name() const override;
 };

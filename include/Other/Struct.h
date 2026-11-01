@@ -1,7 +1,9 @@
 #pragma once
+#include <Other/CostCell.h>
+
 struct CellConfig {
     bool impassable;
-    int move_cost;
+    CostCell cost;
 };
 
 struct RobotTemplateConfig {

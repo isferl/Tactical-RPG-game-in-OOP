@@ -3,6 +3,6 @@
 enum AbilityType {
     AreaDamage,
     FairDamage,
-    HealAbility,
+    Heal,
     Teleports,
 };

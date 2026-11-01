@@ -1,8 +1,9 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 
 class EndGame {
-protected:
+private:
     int count_enemy = 0;
 	bool player_alive = true;
     sf::Font font;

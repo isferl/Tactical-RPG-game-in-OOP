@@ -1,13 +1,13 @@
 #pragma once
+#include <Status/Status.h>
 
-#include "../Robot/IStatus.h"
-
-class OverloadStatus : public IStatus {
+class OverloadStatus : public Status {
 private:
     bool work;
+    bool penalty_spent;
 
 public:
-    explicit OverloadStatus(bool work = false);
+    explicit OverloadStatus(bool work = false, bool penalty_spent = false);
 
     bool is_finished() const override;
 

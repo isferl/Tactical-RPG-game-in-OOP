@@ -3,33 +3,30 @@
 #include <Robot/FactoryRobot.h>
 #include <GameMap/GenerateBoard.h>
 #include <GameMap/LevelConfig.h>
+#include <Robot/Ally.h>
+#include <Robot/Enemy.h>
+#include <Robot/Player.h>
 
 class GameWorld {
 private:
-    FullMap map;
     Board board;
     RobotPlayer player;
-
-    std::list<Robot> allies;
-    std::list<Robot> enemies;
+    std::list<Ally> allies;
+    std::list<Enemy> enemies;
     std::list<RobotFactory> factories;
 
 public:
     GameWorld(LevelConfig &config);
 
-    FullMap &get_map();
-
     Board &get_board();
 
     RobotPlayer &get_player();
 
-    std::list<Robot> &get_allies();
+    std::list<Ally> &get_allies();
 
-    std::list<Robot> &get_enemies();
+    std::list<Enemy> &get_enemies();
 
     std::list<RobotFactory> &get_factories();
 
     void clear_full_cell(int x, int y);
-
-    void clear_full_cell();
 };

@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Text.hpp>
 
 class CoutInformation {
-protected:
+private:
     sf::Font font;
     sf::Text text;
 

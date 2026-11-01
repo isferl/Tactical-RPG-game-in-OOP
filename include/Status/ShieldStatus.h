@@ -1,8 +1,8 @@
 #pragma once
-#include <Robot/IStatus.h>
+#include <Status/Status.h>
 #include <Other/Constants.h>
 
-class ShieldStatus : public IStatus {
+class ShieldStatus : public Status {
 private:
     int shield;
     int remaining_turns;

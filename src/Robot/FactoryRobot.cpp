@@ -36,7 +36,7 @@ void RobotFactory::tick() {
     ++turns_counter;
 }
 
-bool RobotFactory::try_spawn_enemy(Board &board, FullMap &map, std::list<Robot> &enemies) {
+bool RobotFactory::try_spawn_enemy(Board &board, std::list<Enemy> &enemies) {
     std::list<std::pair<int, int> > candidates;
 
     for (int x = position_x; x < position_x + FACTORY_X; ++x)
@@ -49,15 +49,13 @@ bool RobotFactory::try_spawn_enemy(Board &board, FullMap &map, std::list<Robot> 
         candidates.emplace_back(position_x + FACTORY_X, y);
 
     for (auto &[sx, sy]: candidates) {
-        if (sx < 0 || sy < 0 ||
-            sy >= (map.get_map().size()) ||
-            sx >= (map.get_map()[sy].size()))
+        if (sx < 0 || sy < 0 || sy > (board.get_height()) || sx > (board.get_width()))
             continue;
 
-        if (map.get_map_in_xy(sx, sy) == 0) {
-            enemies.emplace_back(HEAL, 10, MAX_HP, DAMAGE, MAX_STAMINA, -2, sx, sy, false);
+        if (board.get_type_in_xy(sx, sy) == CellType::EmptyType) {
+            enemies.emplace_back(HEAL, 10, MAX_HP, DAMAGE, MAX_STAMINA, CellType::EnemyType, sx, sy);
             --count_to_spawn;
-            board.get_field()[sy][sx].set_type_cell(-2, map, sx, sy);
+            board.set_type_in_xy(sx, sy, CellType::EnemyType);
             board.get_field()[sy][sx].set_robot(&enemies.back());
             return true;
         }

@@ -6,6 +6,8 @@
 #include <Status/ShieldStatus.h>
 #include <Status/SlowdownStatus.h>
 #include <Abulity/AreaDamageAbility.h>
+#include <Abulity/HealAbility.h>
+#include <Abulity/TeleportsAbility.h>
 
 class RobotPlayer;
 
@@ -17,8 +19,8 @@ Robot::Robot(int heal, int xp_for_kill, int max_hp, int damage, int max_stamina,
     this->max_stamina = max_stamina;
     stamina = max_stamina;
     this->type_robot = type_robot;
-    this->position_on_map_x = position_on_map_x;
-    this->position_on_map_y = position_on_map_y;
+    this->position_on_game_x = position_on_map_x;
+    this->position_on_game_y = position_on_map_y;
     this->is_friend = is_friend;
     this->heal = heal;
     this->xp_for_kill = xp_for_kill;
@@ -26,7 +28,8 @@ Robot::Robot(int heal, int xp_for_kill, int max_hp, int damage, int max_stamina,
     statues.emplace(StatusType::Overload, std::make_unique<OverloadStatus>(false));
     statues.emplace(StatusType::Shield, std::make_unique<ShieldStatus>(0, SHIELD_BlOCK));
     statues.emplace(StatusType::Slowdown, std::make_unique<SlowdownStatus>(0));
-    ability.emplace(AbilityType::AreaDamage, std::make_unique<AreaDamageAbility>(0));
+    ability.emplace(AbilityType::Heal, std::make_unique<HealAbility>(0));
+    ability.emplace(AbilityType::Teleports, std::make_unique<TeleportsAbility>(0));
 }
 
 void Robot::multi_rank_up(int rank) {
@@ -52,40 +55,4 @@ void Robot::update_xp(int xp) {
         set_xp(get_xp() - get_xp_to_next_rank());
         rank_up();
     }
-}
-
-std::map<StatusType, std::unique_ptr<IStatus> > &Robot::get_statues() {
-    return statues;
-}
-
-IStatus &Robot::get_overload() {
-    return *statues[StatusType::Overload];
-}
-
-IStatus &Robot::get_shield() {
-    return *statues[StatusType::Shield];
-}
-
-IStatus &Robot::get_slowdown() {
-    return *statues[StatusType::Slowdown];
-}
-
-IStatus &Robot::get_burning() {
-    return *statues[StatusType::Burning];
-}
-
-IAbility &Robot::get_area_damage() {
-    return *ability[AbilityType::AreaDamage];
-}
-
-IAbility &Robot::get_fair_damage() {
-    return *ability[AbilityType::FairDamage];
-}
-
-IAbility &Robot::get_heal_ability() {
-    return *ability[AbilityType::HealAbility];
-}
-
-IAbility &Robot::get_teleports() {
-    return *ability[AbilityType::Teleports];
 }

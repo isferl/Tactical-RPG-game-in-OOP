@@ -3,5 +3,5 @@
 
 class Interactions {
 public:
-    bool interactions(Square &cell1, Square &cell2, float coeff_damage = 1);
+    bool interactions(const Square &cell1, const Square &cell2, float coeff_damage = 1);
 };

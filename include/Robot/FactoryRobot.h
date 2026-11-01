@@ -1,10 +1,10 @@
 #pragma once
 #include <list>
-#include <GameMap/FullMap.h>
 #include <GameMap/GenerateBoard.h>
+#include <Robot/Enemy.h>
 
 class RobotFactory {
-protected:
+private:
     int position_x;
     int position_y;
     int spawn_interval;
@@ -30,5 +30,5 @@ public:
 
     void tick();
 
-    bool try_spawn_enemy(Board &board, FullMap &map, std::list<Robot> &enemies);
+    bool try_spawn_enemy(Board &board, std::list<Enemy> &enemies);
 };
