@@ -40,8 +40,7 @@ bool AbilityAction::handle_action(Input::Action action, GameWorld &world, GameSt
     if (player.get_stamina() < ability->get_energy_cost())
         return true;
 
-    selection.start({player.get_position_on_game_x(), player.get_position_on_game_y()},
-                    ability->get_radius(), world.get_board().get_width(), world.get_board().get_height());
+    selection.start({player.get_position_on_game_x(), player.get_position_on_game_y()}, ability->get_radius());
     selected_ability = ability;
     current_state = GameState::ChoosingCell;
     return true;
@@ -54,7 +53,7 @@ void AbilityAction::choosing_cell(Input::Action action, GameWorld &world, GameSt
         return;
     }
 
-    auto point = selection.chose_to_player(action);
+    auto point = selection.chose_to_player(action, world.get_board());
     if (!point || selected_ability == nullptr)
         return;
 

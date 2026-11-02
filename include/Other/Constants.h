@@ -10,7 +10,7 @@ constexpr int BOARD_WIDTH = 10;
 
 constexpr int ROBOT_RADIUS = 10;
 constexpr int VISIBILITY_DISTANCE = 7;
-constexpr int ENTITIES_VISIBILITY_DISTANCE = 7;
+constexpr int ENTITIES_VISIBILITY_DISTANCE = 5;
 
 constexpr float OFFSET_X = (WINDOW_WIDTH - CEIL_SIZE * (BOARD_WIDTH + 2)) / 2.f;
 constexpr float OFFSET_Y = (WINDOW_HEIGHT - CEIL_SIZE * (BOARD_HEIGHT + 2)) / 2.f;
@@ -37,11 +37,10 @@ constexpr int DAMAGE = 50;
 constexpr int COUNT_TO_SPAWN = 5;
 inline int STAMINA_RESTORED_PER_TURN = 15;
 
-
 constexpr int BURNING_DAMAGE = 5;
 constexpr int SHIELD_BlOCK = 5;
 
-constexpr int COUNT_STATUS_FOR_TURN = 2;
+constexpr int COUNT_STATUS_FOR_TURN = 10;
 constexpr int COUNT_ITEMS_FOR_TURN = 1;
 
 constexpr int XP_TO_NEXT_LEVEL_ABILITY = 5;

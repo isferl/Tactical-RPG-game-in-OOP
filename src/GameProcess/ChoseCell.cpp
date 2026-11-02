@@ -1,15 +1,13 @@
 #include <GameProcess/ChoseCell.h>
 #include <Other/NeedFunction.h>
 
-void ChoseCell::start(std::pair<int, int> player_position, int radius, int board_width, int board_height) {
+void ChoseCell::start(std::pair<int, int> player_position, int radius) {
     origin = player_position;
     selected = player_position;
     max_radius = radius;
-    width = board_width;
-    height = board_height;
 }
 
-std::optional<std::pair<int, int> > ChoseCell::chose_to_player(Input::Action action) {
+std::optional<std::pair<int, int> > ChoseCell::chose_to_player(Input::Action action, Board &board) {
     if (action == Input::Action::Confirm)
         return selected;
 
@@ -32,7 +30,7 @@ std::optional<std::pair<int, int> > ChoseCell::chose_to_player(Input::Action act
             return std::nullopt;
     }
 
-    if (next.first < 1 || next.first > width || next.second < 1 || next.second > height)
+    if (next.first < 1 || next.first > board.get_width() || next.second < 1 || next.second > board.get_height())
         return std::nullopt;
 
     if (NeedFunction::distance(origin.first, origin.second, next.first, next.second) <= max_radius)

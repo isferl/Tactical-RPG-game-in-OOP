@@ -3,10 +3,10 @@
 
 
 GenerateCard::GenerateCard() {
-    generate_card(CARD_IN_GAME);
+    generate_cards(CARD_IN_GAME);
 }
 
-std::vector<AbilityType> &GenerateCard::generate_card(int size) {
+std::vector<AbilityType> &GenerateCard::generate_cards(int size) {
     card.clear();
     card.reserve(size);
     for (int cnt = 0; cnt < size; ++cnt) {

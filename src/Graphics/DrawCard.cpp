@@ -108,7 +108,7 @@ void DrawCard::draw_card(Ability &ability, sf::Vector2f position, int number) co
 }
 
 void DrawCard::draw_card_text(const std::string &str, sf::Vector2f position, unsigned int size,
-                                float max_width) const {
+                              float max_width) const {
     sf::Text text(card_font);
     text.setCharacterSize(size);
     text.setFillColor(sf::Color::Black);
@@ -125,4 +125,3 @@ std::string DrawCard::get_card_change(int current, int next) const {
         str += " -> " + std::to_string(next);
     return str;
 }
-

@@ -10,7 +10,7 @@ protected:
 public:
     GenerateCard();
 
-    std::vector<AbilityType> &generate_card(int size);
+    std::vector<AbilityType> &generate_cards(int size);
 
     AbilityType generate_card();
 

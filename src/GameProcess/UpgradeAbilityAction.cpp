@@ -31,16 +31,32 @@ void UpgradeAbilityAction::choosing_update_ability(Input::Action action, RobotPl
         case Input::Action::Num4:
             index = 3;
             break;
+        case Input::Action::Num5:
+            index = 4;
+            break;
+        case Input::Action::Num6:
+            index = 5;
+            break;
+        case Input::Action::Num7:
+            index = 6;
+            break;
+        case Input::Action::Num8:
+            index = 7;
+            break;
+        case Input::Action::Num9:
+            index = 8;
+            break;
+        case Input::Action::Num0:
+            index = 9;
+            break;
         default:
             return;
     }
-
     if (index >= card.get_size())
         return;
-
     AbilityType type = card.get_to_index(index);
     player.update_ability(XP_FOR_RANK_UP, type);
-    card.generate_card(CARD_IN_GAME);
+    card.generate_cards(CARD_IN_GAME);
     if (player.get_point_update() == 0)
         current_state = prev_game_state;
 }

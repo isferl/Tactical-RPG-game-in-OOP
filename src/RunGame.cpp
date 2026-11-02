@@ -29,7 +29,7 @@ void RunGame::launch_window() {
         TurnGame Turn;
         HandleAction actions;
         GenerateCard card;
-
+        // world.get_player().update_xp(10000);
         EndGame endgame(world.get_enemies().size(),
                         "../../material/Fond/HomeVideo-Regular.ttf");
         sf::RenderWindow window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "bin-bon");

@@ -21,8 +21,8 @@ void DrawStatus::draw_status_in_cell(GameWorld &world) const {
             if (statuses.size() == 1)
                 draw_rectangle({x, y}, 0, CEIL_SIZE, get_color_for_status(*statuses.begin()));
             if (statuses.size() == 2) {
-                draw_rectangle({x, y}, 0, CEIL_SIZE / 2.0, get_color_for_status(*(statuses.begin()++)));
-                draw_rectangle({x, y}, CEIL_SIZE / 2.0, CEIL_SIZE / 2.0, get_color_for_status(*statuses.begin()));
+                draw_rectangle({x, y}, 0, CEIL_SIZE / 2.0, get_color_for_status(*(statuses.begin())));
+                draw_rectangle({x, y}, CEIL_SIZE / 2.0, CEIL_SIZE / 2.0, get_color_for_status(*(++statuses.begin())));
             }
         }
     }
